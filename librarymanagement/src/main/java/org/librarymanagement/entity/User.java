@@ -1,12 +1,17 @@
 package org.librarymanagement.entity;
 
 import jakarta.persistence.*;
-import java.time.LocalDateTime;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "users")
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class User {
 
     @Id
@@ -31,7 +36,7 @@ public class User {
     @Column(nullable = false, unique = true)
     private String email;
 
-    @Column
+    @Column(nullable = false)
     private String phone;
 
     @Column(nullable = false)
@@ -46,5 +51,7 @@ public class User {
     @PrePersist
     protected void onCreate() {
         createdAt = LocalDateTime.now();
+        this.status = 1; // hoặc giá trị mặc định
+        this.activatedStatus = 0;
     }
 }
