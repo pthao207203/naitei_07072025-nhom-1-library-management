@@ -2,17 +2,21 @@ package org.librarymanagement.service.impl;
 
 import lombok.extern.slf4j.Slf4j;
 import org.librarymanagement.dto.request.RegisterUserDto;
+import org.librarymanagement.dto.response.ResponseObject;
+import org.librarymanagement.entity.EmailType;
 import org.librarymanagement.entity.User;
 import org.librarymanagement.exception.DuplicateFieldException;
 import org.librarymanagement.repository.UserRepository;
+import org.librarymanagement.service.EmailService;
 import org.librarymanagement.service.RegisterService;
+import org.librarymanagement.utils.JwtUtil;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -22,16 +26,21 @@ public class RegisterServiceImpl implements RegisterService {
 
     private final UserRepository userRepository;
     private final ModelMapper modelMapper;
+    private EmailService emailService;
 
     @Autowired
-    public RegisterServiceImpl(UserRepository userRepository, ModelMapper modelMapper) {
+    public RegisterServiceImpl(UserRepository userRepository, ModelMapper modelMapper, EmailService emailService) {
         this.userRepository = userRepository;
         this.modelMapper = modelMapper;
+        this.emailService = emailService;
     }
 
     @Autowired
     @Lazy
     public PasswordEncoder passwordEncoder;
+
+    @Autowired
+    private JwtUtil jwtUtil;
 
     public Map<String, String> checkDuplicated(RegisterUserDto registerUserDto) {
         Map<String, String> errors = new HashMap<>();
@@ -66,14 +75,35 @@ public class RegisterServiceImpl implements RegisterService {
     }
 
     @Override
-    public void registerUser(RegisterUserDto registerUserDto) {
+    public ResponseObject registerUser(RegisterUserDto registerUserDto) {
 
-        // check lỗi đã tồn tại dữ liệu và trả ra thông báo lỗi
         Map<String, String> errors = checkDuplicated(registerUserDto);
         if (!errors.isEmpty()) {
             throw new DuplicateFieldException(errors);
         }
+
+        User existingUser = userRepository.findByEmail(registerUserDto.getEmail());
+
+        if (existingUser != null) {
+            if (existingUser.isActivatedStatus()) {
+                // Nếu đã xác thực, thông báo
+                return new ResponseObject ("Người dùng đã tồn tại và đã xác thực", 400, null);
+            } else {
+                // Nếu chưa xác thực, thông báo đã gửi lại email
+                String newToken = jwtUtil.generateVerificationToken(existingUser.getEmail());
+                existingUser.setVerificationToken(newToken);
+                userRepository.save(existingUser);
+                emailService.sendEmail(existingUser.getEmail(), newToken, EmailType.VERIFICATION);
+                return new ResponseObject("Mã xác thực đã được gửi qua mail, vui lòng kiểm tra hộp thư", 200, null);
+            }
+        }
+        // Tạo người dùng mới
         User user = modelMapper.map(registerUserDto, User.class);
-        saveUser(user);
+        String newToken = jwtUtil.generateVerificationToken(user.getEmail());
+        user.setVerificationToken(newToken);
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        userRepository.save(user);
+        emailService.sendEmail(user.getEmail(), newToken, EmailType.VERIFICATION);
+        return new ResponseObject("Đăng ký thành công, vui lòng xác thực email", 201, null);
     }
 }

@@ -70,6 +70,6 @@ public class CustomUserDetails implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return user.getActivatedStatus() != null && user.getActivatedStatus() == 1;
+        return user.isActivatedStatus();
     }
 }
