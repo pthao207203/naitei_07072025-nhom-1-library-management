@@ -1,17 +1,14 @@
 package org.librarymanagement.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
 import java.time.LocalDateTime;
+import java.util.Set;
+
+import lombok.Data;
 
 @Entity
 @Table(name = "users")
 @Data
-@NoArgsConstructor
-@AllArgsConstructor
 public class User {
 
     @Id
@@ -36,7 +33,7 @@ public class User {
     @Column(nullable = false, unique = true)
     private String email;
 
-    @Column(nullable = false)
+    @Column
     private String phone;
 
     @Column(nullable = false)
@@ -45,13 +42,22 @@ public class User {
     @Column(name = "created_at", nullable = false)
     private LocalDateTime createdAt;
 
-    @Lob
     private String avatar;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<Review> reviews;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<BorrowRequest> borrowRequests;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<UserInteraction> userInteractions;
 
     @PrePersist
     protected void onCreate() {
         createdAt = LocalDateTime.now();
-        this.status = 1; // hoặc giá trị mặc định
+        this.status = 1;
         this.activatedStatus = 0;
     }
 }
+
