@@ -1,6 +1,6 @@
 /* Header/Navbar Styles */
 .dashboard-header .navbar {
-  min-height: 60px;
+  min-height: 56px;
   padding: 0 30px;
   box-shadow: 0 0 28px 0 rgba(82, 63, 105, 0.08);
   background-color: #fff;
@@ -68,9 +68,14 @@
   position: relative;
 }
 
-.nav-link {
+.nav-link-header {
     color: var(--color-normal);
     font-weight: 700;
+}
+
+.img-fluid {
+    height: 20px !important;
+    width: 20px !important;
 }
 
 /* Search bar */
@@ -122,15 +127,11 @@
 }
 
 .nav-icons {
-  width: 40px;
-  height: 40px;
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: var(--color-normal); /* = $gray-100 */
   border-radius: 50%;
-  color: #495057; /* = $gray-700 */
-  font-size: 1.125rem;
+  color: var(--color-darker); /* = $gray-700 */
   transition: all 0.3s ease;
   position: relative;
 }
@@ -142,10 +143,18 @@
     font-size: 1rem;
   }
 }
-
+.navbar-nav #alertsDropdown + .dropdown-menu {
+    right: auto !important;  /* Bỏ canh phải */
+    left: 0 !important;       /* Canh trái */
+    transform: translateX(-250px) !important; /* Dịch trái 50px */
+}
+.navbar-nav #avatarDropdown + .dropdown-menu {
+    right: auto !important;  /* Bỏ canh phải */
+    left: 0 !important;       /* Canh trái */
+    transform: translateX(-80px) !important; /* Dịch trái 50px */
+}
 .nav-icons:hover {
-  background-color: #e9ecef; /* = $gray-200 */
-  color: #0d6efd; /* = $primary */
+  color: var(--color-normal); /* = $primary */
 }
 
 .nav-icons::after {

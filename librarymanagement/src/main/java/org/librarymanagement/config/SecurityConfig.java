@@ -32,7 +32,7 @@ public class SecurityConfig {
     @Order(0)
     public SecurityFilterChain resources(HttpSecurity http) throws Exception {
         http
-                .securityMatcher("/css/**", "/js/**", "/images/**")
+                .securityMatcher("/public/**")
                 .authorizeHttpRequests(auth -> auth.anyRequest().permitAll())
                 .requestCache(AbstractHttpConfigurer::disable)
                 .securityContext(AbstractHttpConfigurer::disable)

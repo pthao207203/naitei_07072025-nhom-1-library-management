@@ -19,6 +19,7 @@ public class AppConfig {
         ResourceBundleMessageSource messageSource = new ResourceBundleMessageSource();
         messageSource.setBasename("message");  // Đặt tên file properties (không cần phần mở rộng .properties)
         messageSource.setDefaultEncoding("UTF-8");  // Đảm bảo sử dụng đúng mã hóa
+        messageSource.setUseCodeAsDefaultMessage(true); // Nếu thiếu key sẽ hiển thị key luôn
         return messageSource;
     }
 

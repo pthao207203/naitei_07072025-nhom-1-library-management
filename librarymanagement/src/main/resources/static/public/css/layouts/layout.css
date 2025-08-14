@@ -1,0 +1,32 @@
+body {
+    font-family: 'Roboto' !important;
+}
+
+/* Sidebar chiếm cố định bên trái */
+.sidebar-wrapper {
+    padding: 0px !important;
+    width: 220px;
+    min-height: calc(100vh - 56px); /* trừ chiều cao header */
+}
+
+/* Content chiếm phần còn lại */
+.main-content {
+    padding-top: 40px;
+    flex: 1 !important;
+    min-height: calc(100vh - 56px);
+    background-color: var(--color-light);
+}
+
+
+/* Nếu sidebar cố định, có thể dùng position fixed */
+@media (min-width: 992px) {
+    .sidebar-wrapper {
+        position: fixed;
+        top: 56px;   /* bằng chiều cao header */
+        left: 0;
+        height: calc(100vh - 56px);
+    }
+    .has-sidebar {
+        margin-left: 220px;
+    }
+}
