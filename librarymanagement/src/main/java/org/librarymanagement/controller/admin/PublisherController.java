@@ -12,4 +12,9 @@ public class PublisherController {
     public String showPublisherlist() {
         return "admin/publishers/index";
     }
+
+    @GetMapping("/{id}/edit")
+    public String editBook() {
+        return "admin/publishers/edit";
+    }
 }

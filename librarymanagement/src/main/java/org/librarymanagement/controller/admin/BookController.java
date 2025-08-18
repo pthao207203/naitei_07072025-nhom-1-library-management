@@ -13,4 +13,8 @@ public class BookController {
         return "admin/books/index";
     }
 
+    @GetMapping("/{id}/edit")
+    public String editBook() {
+        return "admin/books/edit";
+    }
 }

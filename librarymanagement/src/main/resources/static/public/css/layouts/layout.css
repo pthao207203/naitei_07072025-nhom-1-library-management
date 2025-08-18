@@ -13,7 +13,7 @@ body {
 .main-content {
     padding-top: 40px;
     flex: 1 !important;
-    min-height: calc(100vh - 56px);
+    min-height: calc(100vh);
     background-color: var(--color-light);
 }
 
@@ -67,4 +67,9 @@ body {
     --bs-btn-border-color: var(--color-light-active) !important;
     --bs-btn-hover-border-color: var(--color-light-active) !important;
     color: var(--color-darker) !important;
+}
+
+.img-detail{
+    width: 200px;
+    height: 200px;
 }

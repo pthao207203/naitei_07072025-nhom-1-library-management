@@ -12,4 +12,9 @@ public class GenresController {
     public String showGenreslist() {
         return "admin/genres/index";
     }
+
+    @GetMapping("/{id}/edit")
+    public String editBook() {
+        return "admin/genres/edit";
+    }
 }

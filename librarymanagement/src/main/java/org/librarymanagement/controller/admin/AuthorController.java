@@ -12,4 +12,9 @@ public class AuthorController {
     public String showAuthorlist() {
         return "admin/authors/index";
     }
+
+    @GetMapping("/{id}/edit")
+    public String editBook() {
+        return "admin/authors/edit";
+    }
 }
