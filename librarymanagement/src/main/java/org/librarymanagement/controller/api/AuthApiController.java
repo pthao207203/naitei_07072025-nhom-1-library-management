@@ -26,12 +26,8 @@ public class AuthApiController {
 
     @PostMapping("/register")
     ResponseEntity<ResponseObject> registerUser(@RequestBody @Valid RegisterUserDto registerUserDto){
-        userService.registerUser(registerUserDto);
-        String successMessage = messageSource.getMessage("user.registration.success", null, Locale.getDefault());
-        return ResponseEntity.ok( new ResponseObject(
-                        successMessage,
-                        HttpStatus.OK.value(),
-                        registerUserDto
-        ));
+        ResponseObject responseObject = userService.registerUser(registerUserDto);
+        return ResponseEntity.status(responseObject.status())
+                .body(responseObject);
     }
 }
