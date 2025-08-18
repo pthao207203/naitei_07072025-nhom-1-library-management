@@ -70,7 +70,7 @@ public class BookServiceImpl implements BookService {
                 .orElseThrow(() -> new NotFoundException("Không tìm thấy sách với slug: " + slug));
     }
     @Override
-    public BookDetailResponse  createBookDetailResponseBySlug(String slug) {
+    public BookDetailResponse createBookDetailResponseBySlug(String slug) {
         Book book = findBookBySlug(slug);
 
         Set<BookAuthor> bookAuthors = book.getBookAuthors();
@@ -85,7 +85,7 @@ public class BookServiceImpl implements BookService {
 
         String publisherName = (publisher != null) ? publisher.getName() : null;
 
-        Set<Review>  reviews = book.getReviews();
+        Set<Review> reviews = book.getReviews();
 
         Set<ReviewResponse> reviewResponses = convertReviewsToDtos(reviews);
 
@@ -102,7 +102,7 @@ public class BookServiceImpl implements BookService {
                 reviewResponses
         );
 
-        return  bookDetailResponse;
+        return bookDetailResponse;
     }
 
     private Set<ReviewResponse> convertReviewsToDtos(Set<Review> reviews) {
