@@ -12,4 +12,9 @@ public class BookRequestController {
     public String showRequestBook() {
         return "admin/borrow-requests/index";
     }
+
+    @GetMapping("/{id}/detail")
+    public String showRequestBookedit() {
+        return "admin/borrow-requests/detail";
+    }
 }

@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layouts/layout}">
+
+<head layout:fragment="head">
+    <title>Chi tiết Yêu cầu mượn sách</title>
+</head>
+<body>
+<div layout:fragment="content">
+    <div class="content">
+        <div class="container-fluid p-0">
+
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h1 class="h3 mb-0">
+                    <strong th:text="#{borrowdetail.title}"></strong>
+                </h1>
+            </div>
+
+            <div class="row">
+                <div class="col-12 col-lg-12 col-xxl-12 d-flex">
+                    <div class="card flex-fill p-4">
+                        <!-- Thông tin người mượn -->
+                        <div class="mb-4">
+                            <h4 class="mb-3"  th:text="#{borrower.info}"></h4>
+                            <div class="d-flex align-items-center">
+                                <img src="/public/images/default-avatar.png" alt="Avatar" class="img-detail rounded-circle me-3">
+                                <div>
+                                    <p class="mb-1"><strong th:text="#{book.title} + ':'"></strong> <span>Nguyễn Vũ Nguyên</span></p>
+                                    <p class="mb-1"><strong th:text="#{borrower.email} + ':'"></strong> <span></span>nguyenvunguyen@gmail.com</p>
+                                    <p class="mb-1"><strong th:text="#{borrower.phone} + ':'"></strong> <span></span>0999999999</p>
+                                    <p class="mb-1">
+                                        <strong th:text="#{borrower.status} + ':'"></strong>
+                                        <span class="badge bg-success">Hoạt động</span>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <hr/>
+
+                        <!-- Thông tin sách mượn -->
+                        <div class="mb-4">
+                            <h4 class="mb-3" th:text="#{book.borrow.info}"></h4>
+                            <div class="table-responsive">
+                                <table class="table table-bordered align-middle">
+                                    <thead class="table-dark">
+                                    <tr>
+                                        <th class="d-none d-xl-table-cell text-center" th:text="#{book.title}">Tên sách</th>
+                                        <th class="d-none d-xl-table-cell text-center" th:text="#{book.author}">Tác giả</th>
+                                        <th class="d-none d-xl-table-cell text-center" th:text="#{book.publisher}">Nhà xuất bản</th>
+                                        <th class="d-none d-xl-table-cell text-center" th:text="#{book.publishDate}">Ngày xuất bản</th>
+                                        <th class="d-none d-xl-table-cell text-center" th:text="#{book.availableQuantity}">Số lượng có thể mượn</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr>
+                                        <td class="d-none d-xl-table-cell text-center">Lập trình Pyhton</td>
+                                        <td class="d-none d-xl-table-cell text-center">Lý Tuấn Văn</td>
+                                        <td class="d-none d-xl-table-cell text-center">Nhà xuất bản Kim Đồng</td>
+                                        <td class="d-none d-xl-table-cell text-center">01/9/2023</td>
+                                        <td class="d-none d-xl-table-cell text-center">20</td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <hr/>
+
+                        <!-- Thông tin thời gian -->
+                        <div class="mb-4">
+                            <h4 class="mb-3" th:text="#{borrow.time}"></h4>
+                            <p class="mb-1"><strong th:text="#{borrow.start} + ':'"></strong> <span>18/8/2025</span></p>
+                            <p class="mb-1"><strong th:text="#{borrow.end} + ':'"></strong> <span>01/9/2025</span></p>
+                        </div>
+
+                        <hr/>
+
+                        <!-- Nút hành động -->
+                        <div class="d-flex justify-content-center gap-3">
+                            <form method="post">
+                                <button type="submit" class="btn btn-primary px-4" th:text="#{button.approve}"></button>
+                            </form>
+
+                            <!-- Nút mở form từ chối -->
+                            <button class="btn btn-danger px-4" type="button" data-bs-toggle="collapse" data-bs-target="#rejectForm"
+                                    aria-expanded="false" aria-controls="rejectForm" th:text="#{button.reject}">
+                            </button>
+                        </div>
+
+                        <!-- Form từ chối -->
+                        <div class="collapse mt-3" id="rejectForm">
+                            <div class="card card-body border-danger">
+                                <form method="post">
+                                    <div class="mb-3">
+                                        <label for="reason" class="form-label"><strong th:text="#{reject.reason}"></strong></label>
+                                        <textarea id="reason" name="reason" class="form-control" rows="3" placeholder="#{reject.reason.placeholder}"  required></textarea>
+                                    </div>
+                                    <div class="d-flex justify-content-end">
+                                        <button type="submit" class="btn btn-danger" th:text="#{button.reject.confirm}"></button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
