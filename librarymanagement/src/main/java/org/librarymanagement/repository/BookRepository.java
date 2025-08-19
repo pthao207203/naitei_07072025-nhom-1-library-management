@@ -31,4 +31,6 @@ public interface BookRepository extends JpaRepository<Book,Integer> {
     // Cập nhật EntityGraph để tải eagerly 'bookAuthors' VÀ 'author' bên trong 'bookAuthors'
     @EntityGraph(attributePaths = {"bookAuthors.author", "publisher"})
     Optional<Book> findBySlug(String slug);
+
+    boolean existsBySlug(String slug);
 }

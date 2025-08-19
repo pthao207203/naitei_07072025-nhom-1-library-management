@@ -15,19 +15,4 @@ import java.util.Locale;
 @RestController
 @RequestMapping(ApiEndpoints.USER_AUTH)
 public class AuthApiController {
-    private final RegisterService userService;
-    private final MessageSource messageSource;
-
-    @Autowired
-    public AuthApiController(RegisterService userService,  MessageSource messageSource) {
-        this.userService = userService;
-        this.messageSource = messageSource;
-    }
-
-    @PostMapping("/register")
-    ResponseEntity<ResponseObject> registerUser(@RequestBody @Valid RegisterUserDto registerUserDto){
-        ResponseObject responseObject = userService.registerUser(registerUserDto);
-        return ResponseEntity.status(responseObject.status())
-                .body(responseObject);
-    }
 }
