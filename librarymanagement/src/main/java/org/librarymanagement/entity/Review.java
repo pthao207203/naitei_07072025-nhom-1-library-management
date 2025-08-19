@@ -36,5 +36,4 @@ public class Review {
     protected void onCreate() {
         createdAt = LocalDateTime.now();
     }
-
 }

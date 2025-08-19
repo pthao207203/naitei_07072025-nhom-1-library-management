@@ -1,13 +1,13 @@
 package org.librarymanagement.service;
 
 import org.librarymanagement.dto.response.BookDetailResponse;
-import org.librarymanagement.dto.response.ReviewResponse;
+import org.springframework.data.domain.Page;
+import org.librarymanagement.dto.response.BookDto;
+import org.springframework.data.domain.Pageable;
 import org.librarymanagement.entity.Book;
-import org.librarymanagement.entity.Review;
-
-import java.util.Set;
 
 public interface BookService {
-    public Book findBookBySlug(String slug);
-    public BookDetailResponse createBookDetailResponseBySlug(String slug);
+    Page<BookDto> findAllBooksWithFilter(Pageable pageable);
+    BookDetailResponse createBookDetailResponseBySlug(String slug);
+    Book findBookBySlug(String slug);
 }

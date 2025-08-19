@@ -5,7 +5,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-@Controller
+@Controller("adminBookController")
 @RequestMapping(ApiEndpoints.ADMIN_BOOK)
 public class BookController {
     @GetMapping
@@ -17,4 +17,11 @@ public class BookController {
     public String editBook() {
         return "admin/books/edit";
     }
+
+
+    @GetMapping("/{id}/detail")
+    public String showBookdetail() {
+        return "admin/books/detail";
+    }
+
 }
