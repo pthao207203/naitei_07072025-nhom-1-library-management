@@ -23,7 +23,6 @@ import java.util.Map;
 @Service
 @Slf4j
 public class RegisterServiceImpl implements RegisterService {
-
     private final UserRepository userRepository;
     private final ModelMapper modelMapper;
     private EmailService emailService;

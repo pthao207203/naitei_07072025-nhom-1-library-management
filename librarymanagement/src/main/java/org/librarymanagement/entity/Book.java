@@ -55,5 +55,4 @@ public class Book {
     protected void onCreate() {
         createdAt = LocalDateTime.now();
     }
-
 }

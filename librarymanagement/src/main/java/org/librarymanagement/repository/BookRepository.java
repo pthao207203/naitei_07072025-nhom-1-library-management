@@ -1,8 +1,12 @@
 package org.librarymanagement.repository;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.librarymanagement.dto.response.BookFlatDto;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.librarymanagement.entity.Book;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
@@ -10,6 +14,20 @@ import java.util.Optional;
 @Repository
 public interface BookRepository extends JpaRepository<Book,Integer> {
 
+        @Query("""
+    SELECT new org.librarymanagement.dto.response.BookFlatDto(
+        b.image,
+        b.title,
+        b.description,
+        a.name,
+        p.name
+    )
+    FROM Book b
+    JOIN b.bookAuthors ba
+    JOIN ba.author a
+    JOIN b.publisher p
+""")
+        Page<BookFlatDto> findAllBooksFlat(Pageable pageable);
     // Cập nhật EntityGraph để tải eagerly 'bookAuthors' VÀ 'author' bên trong 'bookAuthors'
     @EntityGraph(attributePaths = {"bookAuthors.author", "publisher"})
     Optional<Book> findBySlug(String slug);
