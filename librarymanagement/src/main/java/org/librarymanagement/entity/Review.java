@@ -2,12 +2,14 @@ package org.librarymanagement.entity;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "reviews")
 @Data
+@EqualsAndHashCode(exclude = {"user", "book"})
 public class Review {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

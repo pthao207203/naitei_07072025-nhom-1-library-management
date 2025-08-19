@@ -2,6 +2,7 @@ package org.librarymanagement.dto.response;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Set;
 
 public record BookDetailResponse(
         Integer id,
@@ -12,5 +13,6 @@ public record BookDetailResponse(
         String description,
         LocalDate publishedDay,
         List<String> authorName,
-        String publisherName
+        String publisherName,
+        Set<ReviewResponse> reviews
 ) {}
