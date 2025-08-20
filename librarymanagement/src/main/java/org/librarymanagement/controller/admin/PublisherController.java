@@ -17,4 +17,9 @@ public class PublisherController {
     public String editBook() {
         return "admin/publishers/edit";
     }
+
+    @GetMapping("/{id}")
+    public String showPublisherdetail() {
+        return "admin/publishers/detail";
+    }
 }

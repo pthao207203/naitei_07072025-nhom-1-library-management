@@ -17,4 +17,9 @@ public class AuthorController {
     public String editBook() {
         return "admin/authors/edit";
     }
+
+    @GetMapping("/{id}")
+    public String showAuthordetail() {
+        return "admin/authors/detail";
+    }
 }

@@ -19,7 +19,7 @@ public class BookController {
     }
 
 
-    @GetMapping("/{id}/detail")
+    @GetMapping("/{id}")
     public String showBookdetail() {
         return "admin/books/detail";
     }
