@@ -12,4 +12,9 @@ public class UserController {
     public String showUserlist() {
         return "admin/users/index";
     }
+
+    @GetMapping("/{id}")
+    public String showUserdetail() {
+        return "admin/users/detail";
+    }
 }
