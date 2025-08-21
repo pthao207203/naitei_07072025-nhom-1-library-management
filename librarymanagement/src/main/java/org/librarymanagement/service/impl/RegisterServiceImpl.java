@@ -12,12 +12,15 @@ import org.librarymanagement.service.RegisterService;
 import org.librarymanagement.utils.JwtUtil;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
 @Service
@@ -26,12 +29,14 @@ public class RegisterServiceImpl implements RegisterService {
     private final UserRepository userRepository;
     private final ModelMapper modelMapper;
     private EmailService emailService;
+    private MessageSource messageSource;
 
     @Autowired
-    public RegisterServiceImpl(UserRepository userRepository, ModelMapper modelMapper, EmailService emailService) {
+    public RegisterServiceImpl(UserRepository userRepository, ModelMapper modelMapper, EmailService emailService, MessageSource messageSource) {
         this.userRepository = userRepository;
         this.modelMapper = modelMapper;
         this.emailService = emailService;
+        this.messageSource = messageSource;
     }
 
     @Autowired
@@ -74,28 +79,13 @@ public class RegisterServiceImpl implements RegisterService {
     }
 
     @Override
-    public ResponseObject registerUser(RegisterUserDto registerUserDto) {
+    public ResponseObject registerUser(RegisterUserDto registerUserDto, Locale locale) {
 
         Map<String, String> errors = checkDuplicated(registerUserDto);
         if (!errors.isEmpty()) {
             throw new DuplicateFieldException(errors);
         }
 
-        User existingUser = userRepository.findByEmail(registerUserDto.getEmail());
-
-        if (existingUser != null) {
-            if (existingUser.isActivatedStatus()) {
-                // Nếu đã xác thực, thông báo
-                return new ResponseObject ("Người dùng đã tồn tại và đã xác thực", 400, null);
-            } else {
-                // Nếu chưa xác thực, thông báo đã gửi lại email
-                String newToken = jwtUtil.generateVerificationToken(existingUser.getEmail());
-                existingUser.setVerificationToken(newToken);
-                userRepository.save(existingUser);
-                emailService.sendEmail(existingUser.getEmail(), newToken, EmailType.VERIFICATION);
-                return new ResponseObject("Mã xác thực đã được gửi qua mail, vui lòng kiểm tra hộp thư", 200, null);
-            }
-        }
         // Tạo người dùng mới
         User user = modelMapper.map(registerUserDto, User.class);
         String newToken = jwtUtil.generateVerificationToken(user.getEmail());
@@ -103,6 +93,7 @@ public class RegisterServiceImpl implements RegisterService {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         userRepository.save(user);
         emailService.sendEmail(user.getEmail(), newToken, EmailType.VERIFICATION);
-        return new ResponseObject("Đăng ký thành công, vui lòng xác thực email", 201, null);
+        String successMessage = messageSource.getMessage("user.registration.success", null, locale);
+        return new ResponseObject(successMessage, HttpStatus.CREATED.value(), registerUserDto);
     }
 }
