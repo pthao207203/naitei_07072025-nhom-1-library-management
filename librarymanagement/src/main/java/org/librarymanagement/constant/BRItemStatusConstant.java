@@ -6,4 +6,5 @@ public class BRItemStatusConstant {
     public static final int RETURNED = 2;
     public static final int OVERDUE = 3;
     public static final int LOST = 4;
+    public static final int CANCELLED = 5;
 }
