@@ -1,24 +1,13 @@
 package org.librarymanagement.service.impl;
 
 import org.apache.poi.ss.usermodel.*;
-import org.librarymanagement.constant.AuthorConstants;
-import org.librarymanagement.constant.BookVersionConstants;
-import org.librarymanagement.dto.response.BookDetailResponse;
-import org.librarymanagement.dto.response.ReviewResponse;
-import org.librarymanagement.dto.response.UserResponse;
+import org.librarymanagement.constant.*;
 import org.librarymanagement.service.*;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.Pageable;
-import org.librarymanagement.dto.response.BookDto;
-import org.librarymanagement.dto.response.BookFlatDto;
-import org.librarymanagement.entity.Book;
-import org.librarymanagement.entity.BookAuthor;
-import org.librarymanagement.entity.Publisher;
-import org.librarymanagement.entity.Review;
+import org.springframework.data.domain.*;
 import org.librarymanagement.entity.*;
-import org.librarymanagement.exception.NotFoundException;
+import org.librarymanagement.dto.response.*;
 import org.librarymanagement.repository.*;
+import org.librarymanagement.exception.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -255,5 +244,53 @@ public class BookServiceImpl implements BookService {
         } catch (NumberFormatException e) {
             return 0;
         }
+    }
+
+    /*Tìm kiếm sách - 91162*/
+    @Override
+    @Transactional(readOnly = true)
+    public List<BookResponseDto> searchBooks(String keyword) {
+        List<BookSearchFlatDto> flat = bookRepository.searchBooks(keyword);
+
+        if(flat.isEmpty()){
+            throw new NotFoundException("Không tìm thấy sách với từ khóa " + keyword);
+        }
+
+        Map<Integer, Set<String>> authorsMap = flat.stream()
+                .filter(dto -> dto.bookAuthor() != null)
+                .collect(Collectors.groupingBy(
+                        BookSearchFlatDto::id,
+                        LinkedHashMap::new,
+                        Collectors.mapping(BookSearchFlatDto::bookAuthor, Collectors.toSet())
+                ));
+
+        Map<Integer, Set<String>> genresMap = flat.stream()
+                .filter(dto -> dto.bookGenre() != null)
+                .collect(Collectors.groupingBy(
+                        BookSearchFlatDto::id,
+                        LinkedHashMap::new,
+                        Collectors.mapping(BookSearchFlatDto::bookGenre, Collectors.toSet())
+                ));
+
+        List<BookResponseDto> results = flat.stream()
+                .collect(Collectors.collectingAndThen(
+                        Collectors.toMap(
+                                BookSearchFlatDto::id,
+                                dto -> new BookResponseDto(
+                                        dto.id(),
+                                        dto.image(),
+                                        dto.title(),
+                                        dto.description(),
+                                        dto.publishedDay(),
+                                        dto.publisherName(),
+                                        authorsMap.getOrDefault(dto.id(), Set.of()),
+                                        genresMap.getOrDefault(dto.id(), Set.of())
+                                ),
+                                (existing, newDto) -> existing,
+                                LinkedHashMap::new
+                        ),
+                        m -> new ArrayList<>(m.values())
+                ));
+        return results;
     }
 }
