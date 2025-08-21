@@ -30,6 +30,9 @@ public class BorrowRequestItem {
     @Column(name = "day_return")
     private LocalDateTime dayReturn;
 
+    @Column(name = "day_expired", nullable = false)
+    private LocalDateTime dayExpired;
+
     @PrePersist
     protected void onCreate() {
         createdAt = LocalDateTime.now();

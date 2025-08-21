@@ -36,4 +36,15 @@ public class GlobalExceptionHandler {
                         null
                 ));
     }
+
+    @ExceptionHandler(NotBorrowedException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ResponseEntity<ResponseObject> handleNotBorrowedException(NotBorrowedException ex) {
+        return ResponseEntity.badRequest()
+                .body(new ResponseObject(
+                        "Có lỗi: " + ex.getMessage(), // Sử dụng message từ exception
+                        HttpStatus.BAD_REQUEST.value(),
+                        null
+                ));
+    }
 }

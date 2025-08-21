@@ -19,23 +19,14 @@ public class BorrowRequest {
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-    @Column(name = "day_start", nullable = false)
-    private LocalDate dayStart;
-
-    @Column(name = "day_end", nullable = false)
-    private LocalDate dayEnd;
-
     @Column(nullable = false)
     private Integer quantity;
 
     @Column(nullable = false)
     private Integer status;
 
-    @Column(name = "day_return")
-    private LocalDateTime dayReturn;
-
-    @Column(name = "day_close")
-    private LocalDateTime dayClose;
+    @Column(name = "day_confirmed")
+    private LocalDateTime dayConfirmed;
 
     @Column(name = "created_at", nullable = false)
     private LocalDateTime createdAt;
