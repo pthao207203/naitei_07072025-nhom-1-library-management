@@ -16,7 +16,7 @@ public class BookGenre {
     private Book book;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "genres_id")
+    @JoinColumn(name = "genre_id")
     private Genre genre;
 
     private Integer status;

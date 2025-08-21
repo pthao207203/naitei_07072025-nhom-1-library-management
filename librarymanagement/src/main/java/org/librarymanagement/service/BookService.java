@@ -8,10 +8,13 @@ import org.librarymanagement.entity.Book;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import org.librarymanagement.dto.response.BookResponseDto;
+import java.util.List;
 
 public interface BookService {
     Page<BookDto> findAllBooksWithFilter(Pageable pageable);
     BookDetailResponse createBookDetailResponseBySlug(String slug);
     Book findBookBySlug(String slug);
     void importBooksFromExcel(MultipartFile file) throws IOException;
+    List<BookResponseDto> searchBooks(String keyword);
 }

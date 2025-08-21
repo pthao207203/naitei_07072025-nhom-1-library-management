@@ -20,7 +20,7 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ResponseObject> handleNotFoundException(NotFoundException ex) {
         return ResponseEntity.badRequest()
                 .body(new ResponseObject(
-                        "Có lỗi : không tìm thấy tài nguyen",
+                        "Có lỗi : không tìm thấy tài nguyên",
                         HttpStatus.NOT_FOUND.value(),
                         null
                 ));
