@@ -9,12 +9,20 @@
 <div layout:fragment="content">
     <div class="content">
         <div class="container-fluid p-0">
-
             <div class="d-flex justify-content-between align-items-center mb-3">
                 <h1 class="h3 mb-0">
                     <strong th:text="#{booklist.title}"></strong>
                 </h1>
-                <a th:href="@{/admin/books/add}" class="btn btn-primary" th:text="'+ ' + #{table.button-add}"></a>
+
+                <div class="d-flex gap-2">
+                    <!-- Download template -->
+                    <a href="#" onclick="downloadAndRedirect()" class="btn btn-warning" th:text="#{table.button-download}"></a>
+                    <!-- Import form -->
+                    <form th:action="@{/admin/book/import}" method="post" enctype="multipart/form-data" id="importForm">
+                        <input type="file" name="file" accept=".xls,.xlsx" class="d-none" id="fileInput" required>
+                        <label for="fileInput" class="btn btn-primary" th:text="'+ ' + #{table.button-add}"></label>
+                    </form>
+                </div>
             </div>
 
             <div class="row">
@@ -28,6 +36,16 @@
             </div>
         </div>
     </div>
+    <div th:if="${message}"
+         class="alert alert-dismissible fade show position-fixed top-0 end-0 m-3"
+         th:classappend="'alert-' + ${alertType}" role="alert" style="z-index: 1050;">
+        <span th:text="${message}"></span>
+        <ul th:if="${errors}">
+            <li th:each="err : ${errors}" th:text="${err}"></li>
+        </ul>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    <script th:src="@{/public/js/admin/book.js}"></script>
 </div>
 </body>
 </html>

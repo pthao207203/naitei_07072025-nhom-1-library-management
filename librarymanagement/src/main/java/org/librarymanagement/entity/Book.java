@@ -1,16 +1,20 @@
 package org.librarymanagement.entity;
 
 import jakarta.persistence.*;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import lombok.*;
+
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
 @Table(name = "books")
 @Data
 @EqualsAndHashCode(exclude = {"bookAuthors", "bookGenres", "reviews", "publisher"})
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class Book {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -42,14 +46,17 @@ public class Book {
 
     private String slug;
 
+    @Builder.Default
     @OneToMany(mappedBy = "book", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<BookAuthor> bookAuthors;
+    private Set<BookAuthor> bookAuthors = new HashSet<>();
 
+    @Builder.Default
     @OneToMany(mappedBy = "book", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<BookGenre> bookGenres;
+    private Set<BookGenre> bookGenres = new HashSet<>();
 
+    @Builder.Default
     @OneToMany(mappedBy = "book", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<Review> reviews;
+    private Set<Review> reviews = new HashSet<>();
 
     @PrePersist
     protected void onCreate() {

@@ -5,9 +5,13 @@ import org.springframework.data.domain.Page;
 import org.librarymanagement.dto.response.BookDto;
 import org.springframework.data.domain.Pageable;
 import org.librarymanagement.entity.Book;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
 
 public interface BookService {
     Page<BookDto> findAllBooksWithFilter(Pageable pageable);
     BookDetailResponse createBookDetailResponseBySlug(String slug);
     Book findBookBySlug(String slug);
+    void importBooksFromExcel(MultipartFile file) throws IOException;
 }
