@@ -3,7 +3,7 @@ package org.librarymanagement.controller.api;
 import org.librarymanagement.dto.response.PageResponse;
 import org.librarymanagement.dto.response.ResponseObject;
 import org.springframework.data.domain.Page;
-import org.librarymanagement.dto.response.BookDto;
+import org.librarymanagement.dto.response.BookListDto;
 import org.librarymanagement.constant.ApiEndpoints;
 import org.librarymanagement.dto.response.BookResponseDto;
 import org.librarymanagement.service.BookService;
@@ -34,8 +34,8 @@ public class BookController {
     }
 
     @GetMapping("/")
-    public ResponseEntity<PageResponse<BookDto>> findAllBooks(Pageable pageable,Locale locale) {
-        Page<BookDto> listBooks = bookService.findAllBooksWithFilter(pageable);
+    public ResponseEntity<PageResponse<BookListDto>> findAllBooks(Pageable pageable, Locale locale) {
+        Page<BookListDto> listBooks = bookService.findAllBooksWithFilter(null, null, null, pageable);
 
         String successMessage = messageSource.getMessage("book.query.success", null, locale);
         return ResponseEntity.ok(new PageResponse<>(
