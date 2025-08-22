@@ -1,6 +1,7 @@
 package org.librarymanagement.exception;
 
 import jakarta.servlet.http.HttpServletRequest;
+import org.librarymanagement.dto.response.NotEnoughBookErrorResponse;
 import org.librarymanagement.dto.response.ValidationErrorResponse;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
@@ -45,6 +46,18 @@ public class ValidationExceptionHandler {
                 .status(HttpStatus.BAD_REQUEST.value())
                 .path(request.getRequestURI())
                 .error("Duplicate field")
+                .fieldErrors(ex.getFieldErrors())
+                .build();
+    }
+
+    // Xu ly sach khong co
+    @ExceptionHandler(NotEnoughBookException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public NotEnoughBookErrorResponse handleNotEnoughBookException(NotEnoughBookException ex)
+    {
+        return NotEnoughBookErrorResponse.builder()
+                .status(HttpStatus.BAD_REQUEST.value())
+                .error(ex.getMessage())
                 .fieldErrors(ex.getFieldErrors())
                 .build();
     }

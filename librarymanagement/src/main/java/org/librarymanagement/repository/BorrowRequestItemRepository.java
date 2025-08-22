@@ -8,6 +8,8 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 public interface BorrowRequestItemRepository extends JpaRepository<BorrowRequestItem, Integer> {
 
@@ -18,4 +20,6 @@ public interface BorrowRequestItemRepository extends JpaRepository<BorrowRequest
     """)
     boolean existsByBookAndUserAndStatus(@Param("book") Book book, @Param("user") User user, @Param("status") int status);
 
+    @Query("SELECT bri FROM BorrowRequestItem bri WHERE bri.status IN (:statuses)")
+    List<BorrowRequestItem> findByStatuses(@Param("statuses") List<Integer> statuses);
 }
