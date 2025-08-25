@@ -3,11 +3,11 @@ package org.librarymanagement.entity;
 public enum EmailTemplate {
     VERIFICATION(
             "Xác thực email",
-            "/req/signup/verify",
+            "api/auth/register/verify",
             "Nhấn để xác thực email"),
     RESET_PASSWORD(
             "Khôi phục mật khẩu",
-            "/req/password/reset",
+            "api/auth/register/password/reset",
             "Nhấn để đổi mật khẩu");
 
     private final String subject;

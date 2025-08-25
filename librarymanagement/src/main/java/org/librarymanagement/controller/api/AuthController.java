@@ -10,10 +10,10 @@ import org.librarymanagement.service.AuthService;
 import org.librarymanagement.service.RegisterService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
+
+import java.util.Locale;
 
 @RestController("userAuthController")
 @RequestMapping(ApiEndpoints.USER_AUTH)
@@ -35,9 +35,27 @@ public class AuthController {
     }
 
     @PostMapping("/register")
-    ResponseEntity<ResponseObject> registerUser(@RequestBody @Valid RegisterUserDto registerUserDto){
-        ResponseObject responseObject =  registerService.registerUser(registerUserDto);
+    ResponseEntity<ResponseObject> registerUser(@Valid @RequestBody RegisterUserDto registerUserDto, Locale locale){
+        ResponseObject responseObject =  registerService.registerUser(registerUserDto, locale);
         return ResponseEntity.status(responseObject.status())
                 .body(responseObject);
+    }
+
+    @GetMapping("/register/verify")
+    public ModelAndView verifyEmail(@RequestParam("token") String token, Locale locale) {
+        ResponseObject result = loginService.verifyEmail(token, locale);
+
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.addObject("message", result.message());
+
+        if (result.status() == HttpStatus.OK.value()) {
+            modelAndView.setViewName("email/verification-success");
+        }
+
+        else {
+            modelAndView.setViewName("email/verification-error");
+        }
+
+        return modelAndView;
     }
 }

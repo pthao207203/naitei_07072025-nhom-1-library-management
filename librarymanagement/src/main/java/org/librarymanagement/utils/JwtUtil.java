@@ -25,7 +25,7 @@ public class JwtUtil {
     }
 
     public String generateVerificationToken(String email){
-        long expirationMillis = 300000;
+        long expirationMillis = 1000 * 60 * 5;
         return Jwts.builder()
                 .setSubject(email)
                 .setIssuedAt(new Date())
@@ -39,7 +39,7 @@ public class JwtUtil {
     }
 
     public String extractEmail(String token){
-        JwtParserBuilder jwtParserBuilder = Jwts.parser(); // parser() này từ đoạn bạn đưa
+        JwtParserBuilder jwtParserBuilder = Jwts.parser();
         jwtParserBuilder.setSigningKey(key);
 
         return jwtParserBuilder.build()
@@ -75,7 +75,7 @@ public class JwtUtil {
     }
 
     private Date extractExpiration(String token){
-        JwtParserBuilder jwtParserBuilder = Jwts.parser(); // parser() này từ đoạn bạn đưa
+        JwtParserBuilder jwtParserBuilder = Jwts.parser();
         jwtParserBuilder.setSigningKey(key);
 
         return jwtParserBuilder.build()

@@ -107,12 +107,12 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
 
                 .authorizeHttpRequests(authorizationManagerRequestMatcherRegistry -> {
-                    authorizationManagerRequestMatcherRegistry.requestMatchers("/req/**","/css/**","/js/**").permitAll();
+                    authorizationManagerRequestMatcherRegistry.requestMatchers("/register/**","/css/**","/js/**").permitAll();
                     authorizationManagerRequestMatcherRegistry.anyRequest().authenticated();
                 })
 
                 .formLogin(httpSecurityFormLoginConfigurer -> {
-                    httpSecurityFormLoginConfigurer.loginPage("/req/login").permitAll();
+                    httpSecurityFormLoginConfigurer.loginPage("/register").permitAll();
                     httpSecurityFormLoginConfigurer.defaultSuccessUrl("/index");
                 });
         return http.build();
