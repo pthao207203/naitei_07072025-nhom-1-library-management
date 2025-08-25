@@ -1,6 +1,7 @@
 package org.librarymanagement.repository;
 
 import org.librarymanagement.entity.Book;
+import org.librarymanagement.entity.BorrowRequest;
 import org.librarymanagement.entity.BorrowRequestItem;
 import org.librarymanagement.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -22,4 +23,5 @@ public interface BorrowRequestItemRepository extends JpaRepository<BorrowRequest
 
     @Query("SELECT bri FROM BorrowRequestItem bri WHERE bri.status IN (:statuses)")
     List<BorrowRequestItem> findByStatuses(@Param("statuses") List<Integer> statuses);
+    List<BorrowRequestItem> findBorrowRequestItemByBorrowRequest(BorrowRequest borrowRequest);
 }
